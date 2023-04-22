@@ -5,130 +5,104 @@
  */
 package canciondewii;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.util.regex.Pattern;
+import java.io.InputStreamReader;
+import java.io.FileNotFoundException;
 
 /**
  *
  * @author JoseFabioAL
  */
 public class leertxt {
-    
-    public String GetTxtString(String ruta) throws FileNotFoundException, IOException{ //ruta del archivo que tenemos que leer
-        File archivo = new File(ruta);
-//        BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(archivo))); 
-        BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(archivo)));
-        String linea = ""; 
-        int numeroDeLineas = 0;
-        String archivoo = "";
-    //    while((linea = br.readLine())!=null){ 
-    //        numeroDeLineas++;
-    //    }
-        while((linea = br.readLine())!=null){ 
-            if(numeroDeLineas == 0){
-                archivoo = linea;
-                numeroDeLineas++;
-    //            System.out.println("numeroDeLineas == 0: " + archivoo);
-            }else{
-                archivoo = archivoo+"\n"+linea;
-                numeroDeLineas++;
-            }
+  public String GetTxtString(String ruta) throws FileNotFoundException, IOException { //ruta del archivo que tenemos que leer
+    String linea = "";
+    String archivoo = "";
+    int numeroDeLineas = 0;
+    File archivo = new File(ruta);
+    BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(archivo)));
 
-        }
-
-        String archivoString = archivoo.toString();
-        
-        
-        return archivoString;
-        
+    while ((linea = br.readLine()) != null) {
+      if (numeroDeLineas == 0) {
+        archivoo = linea;
+        numeroDeLineas++;
+      } else {
+        archivoo = archivoo + "\n" + linea;
+        numeroDeLineas++;
+      }
     }
-    
-    
-    public Object[] gettxtObject(String rutaArchivo){ //ruta del archivo que tenemos que leer
-    
-        String texto = "";
 
-        try{
-            BufferedReader bf = new BufferedReader(new FileReader(rutaArchivo));
+    br.close();
 
-            String temporal = "";//se guarda temporalmente el archivo en este String
-            String bfRead;
-            while((bfRead = bf.readLine()) != null){ //haz el ciclo mientras bfRead tienen datos
+    return archivoo.toString();
+  }
 
-                temporal = temporal+bfRead+",";//guardado el texto del archivo
+  public Object[] gettxtObject(String rutaArchivo) { //ruta del archivo que tenemos que leer
+    String texto = "";
 
-            }
+    try {
+      BufferedReader bf = new BufferedReader(new FileReader(rutaArchivo));
 
-        texto = temporal; //lo guardamos en una variabe externa ya que temporal solo tiene vida en en try catch
+      String temporal = "";//se guarda temporalmente el archivo en este String
+      String bfRead;
+      while ((bfRead = bf.readLine()) != null) //haz el ciclo mientras bfRead tienen datos
+        temporal = temporal + bfRead + ",";//guardado el texto del archivo
 
-        }catch(Exception e){
-            System.out.println("no se encontro el archivo");
-        }
+      texto = temporal; //lo guardamos en una variabe externa ya que temporal solo tiene vida en en try catch
 
-
-
-
-
-        Object[] archivoArray = texto.split(",");
-
-    //    for(int i =0; i<archivoArray.length; i++){
-    //        System.out.println(archivoArray[i]);
-    //    }
-    //    archivoArray.remove(0);
-
-
-        return archivoArray;
-        
+      bf.close();
+    } catch (Exception e) {
+      System.out.println("no se encontro el archivo");
     }
-    
-    public Object get1rstMusic() throws FileNotFoundException, IOException{
-        
-                File carpeta=new File("../canciones/cancionesJava/");
-        ArrayList listaArchivos=new ArrayList();
-        for(File archivo:carpeta.listFiles())
-	listaArchivos.add(archivo.getName());
-        String listaArchivos2 = listaArchivos.toString();
-        listaArchivos2 = listaArchivos2.substring(12, listaArchivos2.length());
-        listaArchivos2 = listaArchivos2.substring(0, listaArchivos2.length()-5);
-        Object[] listaArchivosArray = listaArchivos2.split(Pattern.quote(".mp3, "));
-        
-        return listaArchivosArray[0];
-        
+
+    Object[] archivoArray = texto.split(",");
+
+    return archivoArray;
+  }
+
+  public Object get1rstMusic() throws FileNotFoundException, IOException {
+    File carpeta = new File("../canciones/cancionesJava/");
+    ArrayList<String> listaArchivos = new ArrayList<String>();
+
+    for (File archivo : carpeta.listFiles())
+      listaArchivos.add(archivo.getName());
+
+    String listaArchivos2 = listaArchivos.toString();
+    listaArchivos2 = listaArchivos2.substring(12, listaArchivos2.length());
+    listaArchivos2 = listaArchivos2.substring(0, listaArchivos2.length() - 5);
+    Object[] listaArchivosArray = listaArchivos2.split(Pattern.quote(".mp3, "));
+
+    return listaArchivosArray[0];
+  }
+
+  public Object[] getCanciones() {
+    File carpeta = new File("../canciones/cancionesJava/");
+    ArrayList<String> listaArchivos = new ArrayList<String>();
+    for (File archivo : carpeta.listFiles())
+      listaArchivos.add(archivo.getName());
+    String listaArchivos2 = listaArchivos.toString();
+    listaArchivos2 = listaArchivos2.substring(12, listaArchivos2.length());
+    listaArchivos2 = listaArchivos2.substring(0, listaArchivos2.length() - 5);
+    Object[] listaArchivosArray = listaArchivos2.split(Pattern.quote(".mp3, "));
+
+    return listaArchivosArray;
+  }
+
+  public Object[] getCancionesAbajo(String cancionActual) {
+    leertxt leertxt = new leertxt();
+    ArrayList<Object> listaCanciones = new ArrayList<Object>();
+    Object[] ObjectCanciones = leertxt.getCanciones();
+    for (int i = 0; i < ObjectCanciones.length; i++) {
+      listaCanciones.add(ObjectCanciones[i]);
     }
-    public Object[] getCanciones(){
-        File carpeta=new File("../canciones/cancionesJava/");
-        ArrayList listaArchivos=new ArrayList();
-        for(File archivo:carpeta.listFiles())
-	listaArchivos.add(archivo.getName());
-        String listaArchivos2 = listaArchivos.toString();
-        listaArchivos2 = listaArchivos2.substring(12, listaArchivos2.length());
-        listaArchivos2 = listaArchivos2.substring(0, listaArchivos2.length()-5);
-        Object[] listaArchivosArray = listaArchivos2.split(Pattern.quote(".mp3, "));
-        
-        return listaArchivosArray;
-    }
-    public Object[] getCancionesAbajo(String cancionActual){
-        leertxt leertxt = new leertxt();
-        ArrayList listaCanciones = new ArrayList();
-        Object[] ObjectCanciones = leertxt.getCanciones();
-        for(int i = 0; i < ObjectCanciones.length; i++){
-            listaCanciones.add(ObjectCanciones[i]);
-        }
-        cancionActual = cancionActual.substring(0, cancionActual.length() - 4); //La cancion actualmente elejida
-//        System.out.println("cancionActual: " + cancionActual);
-        int numCancionActual = listaCanciones.indexOf(cancionActual);   //se saca el numero de la posicion de la cancion que esta actualmente
-        
-//        for(int i = 0; i <= (listaCanciones.size()-1) - numCancionActual; i++){
-//            System.out.println(listaCanciones.get(i));
-//        }
-        return null;
-    }
-    
+    cancionActual = cancionActual.substring(0, cancionActual.length() - 4); //La cancion actualmente elejida
+
+    return null;
+  }
+
 }
